@@ -18,9 +18,11 @@ namespace EpidemicTracker.data.Models
         public string Gender { get; set; }
         [Required]
         public long Phone { get; set; }
-       
-        public long? AadharId { get; set; }
         
+        public long? AadharId { get; set; }
+
+        public string IsAffected { get; set; }
+
         public string CreatedBy { get; set; }
         
         public DateTime? CreatedDate { get; set; }

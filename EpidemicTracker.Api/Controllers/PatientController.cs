@@ -26,7 +26,30 @@ namespace EpidemicTracker.Api.Controllers
         {
             return Ok(await _patientService.GetAllAsync());
         }
-        
+        [HttpGet]
+        [Route("PatientData")]
+        public async Task<IActionResult> GetCuredPatients()
+        {
+            return Ok(await _patientService.GetCuredPatients());
+        }
+        [HttpGet]
+        [Route("PatientDataUncured")]
+        public async Task<IActionResult> GetUnCuredPatients()
+        {
+            return Ok(await _patientService.GetUnCuredPatients());
+        }
+        [HttpGet]
+        [Route("PatientDataFatility")]
+        public async Task<IActionResult> GetFatilityCount()
+        {
+            return Ok(await _patientService.GetFatilityCount());
+        }
+        [HttpGet]
+        [Route("PatientDataIsAffected")]
+        public async Task<IActionResult> GetIsAffected()
+        {
+            return Ok(await _patientService.GetIsAffected());
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPatientAsync(int id)

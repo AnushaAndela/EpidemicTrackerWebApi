@@ -72,7 +72,7 @@ namespace EpidemicTracker.Api.Services
 
 
 
-        public async Task<HospitalDto> PostHospitalAsync(HospitalDto hospitalDto)
+        public async Task PostHospitalAsync(HospitalDto hospitalDto)
         {
             var hospital = new Hospital
             {
@@ -91,19 +91,7 @@ namespace EpidemicTracker.Api.Services
             _context.Hospital.Add(hospital);
             await _context.SaveChangesAsync();
 
-            var value = new HospitalDto
-            {
-                HospitalDtoId = hospital.HospitalId,
-                Name = hospital.Name,
-                Phone = hospital.Phone,
-                StreetNo = hospital.StreetNo,
-                Area = hospital.Area,
-                City = hospital.City,
-                State = hospital.State,
-                Country = hospital.Country,
-                Pincode = hospital.Pincode
-            };
-            return value;
+           
 
         }
     }

@@ -8,8 +8,8 @@ namespace EpidemicTracker.Api.Services
 {
     public interface IDiseaseService
     {
-        Task<IList<DiseaseDto>> GetAllAsync();
+        Task<IEnumerable<DiseaseDto>> GetAllAsync();
         Task<DiseaseDto> GetDiseaseAsync(int id);
-        Task<DiseaseDto> PostDiseaseAsync(DiseaseDto diseaseDto);
+        Task PostDiseaseAsync(DiseaseDto diseaseDto);
     }
 }

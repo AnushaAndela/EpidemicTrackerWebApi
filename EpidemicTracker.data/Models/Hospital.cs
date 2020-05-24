@@ -12,17 +12,17 @@ namespace EpidemicTracker.data.Models
         public int HospitalId { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
+      
         public long Phone { get; set; }
-        [Required]
+        
         public string StreetNo { get; set; }
-        [Required]
+        
         public string Area { get; set; }
-        [Required]
+        
         public string City { get; set; }
-        [Required]
+      
         public string State { get; set; }
-        [Required]
+        
         public string Country { get; set; }
         public int? Pincode { get; set; }
         public string CreatedBy { get; set; }

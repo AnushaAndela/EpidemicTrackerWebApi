@@ -10,7 +10,10 @@ namespace EpidemicTracker.Api.Services
     {
         Task<PatientDto> GetPatientAsync(int id);
         Task<IEnumerable<PatientDto>> GetAllAsync();
-        
+        Task<IEnumerable<TreatmentDto>> GetCuredPatients();
+        Task<IEnumerable<TreatmentDto>> GetUnCuredPatients();
+        Task<IEnumerable<TreatmentDto>> GetFatilityCount();
+        Task<IEnumerable<PatientDto>> GetIsAffected();
         Task PostPatientAsync(PatientDto patientDto);
     }
 }

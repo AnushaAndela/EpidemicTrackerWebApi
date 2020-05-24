@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace EpidemicTracker.Api.Services
@@ -28,6 +29,7 @@ namespace EpidemicTracker.Api.Services
                                Gender = a.Gender,
                                Phone = a.Phone,
                                AadharId = a.AadharId,
+                               IsAffected=a.IsAffected,
                                Addresses = (from b in a.Address
                                             select new AddressDto()
                                             {
@@ -76,6 +78,7 @@ namespace EpidemicTracker.Api.Services
                 patientDto.Age = patient.Age;
                 patientDto.Gender = patient.Gender;
                 patientDto.AadharId = patient.AadharId;
+                patientDto.IsAffected = patient.IsAffected;
                 patientDto.Addresses = new List<AddressDto>();
                 foreach (var item in patient.Address)
                 {
@@ -121,8 +124,217 @@ namespace EpidemicTracker.Api.Services
 
         }
 
+        public async Task<IEnumerable<TreatmentDto>> GetCuredPatients()
+        {
+            
+            var curedList = (from t in _context.Treatment
+                 .Include(x => x.Patient)
+                 .Include(x => x.Disease)
+                 .Where(x=> x.PercentageCure == 100 )
+                             select new TreatmentDto()
+                             {
+                                 AdmittedDate = t.AdmittedDate,
+                                 PercentageCure = t.PercentageCure,
+                                 RelievingDate = t.RelievingDate,
+                                 Isfatility = t.Isfatility,
+                                 DiseaseDto = new DiseaseDto
+                                 {
+                                     DiseaseDtoId = t.Disease.DiseaseId,
+                                     Name = t.Disease.Name
+                                 },
+                                 HospitalDto = new HospitalDto
+                                 {
+                                     HospitalDtoId = t.Hospital.HospitalId,
+                                     Name = t.Hospital.Name
+                                 },
+
+                                 PatientDto =new PatientDto
+                                 {
+                                     Name = t.Patient.Name,
+                                     Age = t.Patient.Age,
+                                     Gender = t.Patient.Gender,
+                                     Phone = t.Patient.Phone,
+                                     AadharId = t.Patient.AadharId,
+                                     IsAffected=t.Patient.IsAffected,
+                                     Addresses = (from b in t.Patient.Address
+                                                  select new AddressDto
+                                                  {
+                                                      AddressType = b.AddressType,
+                                                      Hno = b.Hno,
+                                                      Street = b.Street,
+                                                      City = b.City,
+                                                      State = b.State,
+                                                      Country = b.Country
+
+                                                  }).ToList()
+
+                                 }
+                                
+                             }).ToList();
+
+          
+
+            return curedList;
+
+        }
+
+        public async Task<IEnumerable<TreatmentDto>> GetUnCuredPatients()
+        {
 
 
+            var uncuredList = (from t in _context.Treatment
+                 .Include(x => x.Patient)
+                 .Include(x => x.Disease)
+                 .Where(x => x.PercentageCure != 100 )
+                               select new TreatmentDto()
+                               {
+                                   AdmittedDate=t.AdmittedDate,
+                                   PercentageCure=t.PercentageCure,
+                                   RelievingDate=t.RelievingDate,
+                                   Isfatility=t.Isfatility,
+                                   DiseaseDto = new DiseaseDto
+                                   {
+                                       DiseaseDtoId = t.Disease.DiseaseId,
+                                       Name = t.Disease.Name
+                                   },
+                                   HospitalDto=new HospitalDto
+                                   {
+                                       HospitalDtoId=t.Hospital.HospitalId,
+                                       Name=t.Hospital.Name
+                                   },
+                                   PatientDto = new PatientDto
+                                   {
+                                       Name = t.Patient.Name,
+                                       Age = t.Patient.Age,
+                                       Gender = t.Patient.Gender,
+                                       Phone = t.Patient.Phone,
+                                       AadharId = t.Patient.AadharId,
+                                       IsAffected=t.Patient.IsAffected,
+                                       Addresses = (from b in t.Patient.Address
+                                                    select new AddressDto
+                                                    {
+                                                        AddressType = b.AddressType,
+                                                        Hno = b.Hno,
+                                                        Street = b.Street,
+                                                        City = b.City,
+                                                        State = b.State,
+                                                        Country = b.Country
+
+                                                    }).ToList()
+
+                                   }
+                                  
+                               }).ToList();
+
+            return uncuredList;
+
+        }
+        public async Task<IEnumerable<TreatmentDto>> GetFatilityCount()
+        {
+
+
+            var fatilityList = (from t in _context.Treatment
+                 .Include(x => x.Patient)
+                 .Include(x => x.Disease)
+                 .Where(x => x.Isfatility == "Yes" && x.Isfatility=="YES")
+                               select new TreatmentDto()
+                               {
+                                   AdmittedDate = t.AdmittedDate,
+                                   PercentageCure = t.PercentageCure,
+                                   RelievingDate = t.RelievingDate,
+                                   Isfatility = t.Isfatility,
+                                   DiseaseDto = new DiseaseDto
+                                   {
+                                       DiseaseDtoId = t.Disease.DiseaseId,
+                                       Name = t.Disease.Name
+                                   },
+                                   HospitalDto = new HospitalDto
+                                   {
+                                       HospitalDtoId = t.Hospital.HospitalId,
+                                       Name = t.Hospital.Name
+                                   },
+                                   PatientDto = new PatientDto
+                                   {
+                                       Name = t.Patient.Name,
+                                       Age = t.Patient.Age,
+                                       Gender = t.Patient.Gender,
+                                       Phone = t.Patient.Phone,
+                                       AadharId = t.Patient.AadharId,
+                                       IsAffected=t.Patient.IsAffected,
+                                       Addresses = (from b in t.Patient.Address
+                                                    select new AddressDto
+                                                    {
+                                                        AddressType = b.AddressType,
+                                                        Hno = b.Hno,
+                                                        Street = b.Street,
+                                                        City = b.City,
+                                                        State = b.State,
+                                                        Country = b.Country
+
+                                                    }).ToList()
+
+                                   }
+                                   
+
+                               }).ToList();
+
+            return fatilityList;
+
+
+        }
+
+        public async Task<IEnumerable<PatientDto>> GetIsAffected()
+        {
+            var IsAffected = (from a in _context.Patient
+                 .Include(x=>x.Treatment)
+                 .ThenInclude(x=>x.Hospital)
+                
+                 .Where(x => x.IsAffected == "Yes")
+                               select new PatientDto()
+                               {
+                                   Name = a.Name,
+                                   Age = a.Age,
+                                   Gender = a.Gender,
+                                   Phone = a.Phone,
+                                   AadharId = a.AadharId,
+                                   IsAffected = a.IsAffected,
+                                   Addresses = (from b in a.Address
+                                                select new AddressDto()
+                                                {
+                                                    AddressType = b.AddressType,
+                                                    Hno = b.Hno,
+                                                    Street = b.Street,
+                                                    City = b.City,
+                                                    State = b.State,
+                                                    Country = b.Country
+
+
+                                                }).ToList(),
+                                   Occupations = (from o in a.Occupation
+                                                  select new OccupationDto()
+                                                  {
+                                                      Name = o.Name,
+                                                      Phone = o.Phone,
+                                                      StreetNo = o.StreetNo,
+                                                      Area = o.Area,
+                                                      City = o.City,
+                                                      State = o.State,
+                                                      Country = o.Country,
+                                                      Pincode = o.Pincode
+                                                  }).ToList(),
+                                   Treatments = (from t in a.Treatment
+                                                 select new TreatmentDto()
+                                                 {
+                                                     AdmittedDate = t.AdmittedDate,
+                                                     PercentageCure = t.PercentageCure,
+                                                     RelievingDate = t.RelievingDate,
+                                                     Isfatility = t.Isfatility
+
+                                                 }).ToList()
+
+                               }).ToList();
+            return IsAffected;
+         }                  
         public async Task PostPatientAsync(PatientDto patientdto)
         {
 
@@ -133,6 +345,7 @@ namespace EpidemicTracker.Api.Services
             patient.Gender = patientdto.Gender;
             patient.Phone = patientdto.Phone;
             patient.AadharId = patientdto.AadharId;
+            patient.IsAffected = patientdto.IsAffected;
             patient.Address = new List<Address>();
 
 
@@ -162,8 +375,26 @@ namespace EpidemicTracker.Api.Services
                 treatment.PercentageCure = item.PercentageCure;
                 treatment.RelievingDate = item.RelievingDate;
                 treatment.Isfatility = item.Isfatility;
+                //treatment.PatientId = item.PatientId;
+               
+                //treatment.DiseaseId = item.DiseaseId;
+               
 
+                treatment.Disease = new Disease()
+                {
+                    DiseaseId=item.DiseaseDto.DiseaseDtoId,
+                    Name = item.DiseaseDto.Name
+
+
+                };
+                treatment.Hospital = new Hospital()
+                {
+                    HospitalId=item.HospitalDto.HospitalDtoId,
+                    Name = item.HospitalDto.Name,
+                    
+                };
                 patient.Treatment.Add(treatment);
+
             }
 
             //Statusenum status = patientdto.Status;
@@ -173,8 +404,9 @@ namespace EpidemicTracker.Api.Services
 
 
             _context.Patient.Add(patient);
+            
             await _context.SaveChangesAsync();
-
+            
 
 
         }

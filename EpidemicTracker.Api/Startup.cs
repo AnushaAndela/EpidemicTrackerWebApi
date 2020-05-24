@@ -24,6 +24,7 @@ namespace EpidemicTracker.Api
         {
             Configuration = configuration;
         }
+        readonly string _specificOrigin = "_specificOrigin";
 
         public IConfiguration Configuration { get; }
 
@@ -36,7 +37,14 @@ namespace EpidemicTracker.Api
             services.AddScoped(typeof(IHospitalService), typeof(HospitalService));
             services.AddScoped(typeof(IDiseaseService), typeof(DiseaseService));
             services.AddScoped(typeof(IDiseaseTypeService), typeof(DiseaseTypeService));
+            services.AddCors(options =>
+            {
+                options.AddPolicy(_specificOrigin,
+                                 p => p.AllowAnyOrigin()
+                                 .AllowAnyMethod()
+                                 .AllowAnyHeader());
 
+            });
 
 
 
@@ -44,7 +52,9 @@ namespace EpidemicTracker.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,19 +66,21 @@ namespace EpidemicTracker.Api
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
             app.UseRouting();
-
+            app.UseCors(_specificOrigin);
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

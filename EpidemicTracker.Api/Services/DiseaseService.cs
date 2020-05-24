@@ -17,7 +17,7 @@ namespace EpidemicTracker.Api.Services
             _context = context;
 
         }
-        public async Task<IList<DiseaseDto>> GetAllAsync()
+        public async Task<IEnumerable<DiseaseDto>> GetAllAsync()
         {
             var diseasesDto = new List<DiseaseDto>();
             var diseases = await _context.Disease.ToListAsync();
@@ -31,7 +31,8 @@ namespace EpidemicTracker.Api.Services
 
                 diseasesDto.Add(diseaseDto);
             }
-            return diseasesDto;
+            var diseaseDtolist = diseasesDto.Distinct();
+            return diseaseDtolist;
         }
 
         public async Task<DiseaseDto> GetDiseaseAsync(int id)
@@ -48,7 +49,7 @@ namespace EpidemicTracker.Api.Services
             return diseaseDto;
         }
 
-        public async Task<DiseaseDto> PostDiseaseAsync(DiseaseDto diseaseDto)
+        public async Task PostDiseaseAsync(DiseaseDto diseaseDto)
         {
             var disease = new Disease
             {
@@ -61,13 +62,7 @@ namespace EpidemicTracker.Api.Services
             _context.Disease.Add(disease);
             await _context.SaveChangesAsync();
 
-            var value = new DiseaseDto
-            {
-                DiseaseDtoId = disease.DiseaseId,
-                Name = disease.Name
-
-            };
-            return value;
+           
         }
     }
 }

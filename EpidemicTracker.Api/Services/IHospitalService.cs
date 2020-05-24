@@ -10,6 +10,6 @@ namespace EpidemicTracker.Api.Services
     {
         Task<HospitalDto> GetHospitalAsync(int id);
         Task<IList<HospitalDto>> GetAllAsync();
-        Task<HospitalDto> PostHospitalAsync(HospitalDto hospitalDto);
+        Task PostHospitalAsync(HospitalDto hospitalDto);
     }
 }

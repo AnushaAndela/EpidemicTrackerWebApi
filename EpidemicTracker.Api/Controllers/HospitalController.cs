@@ -35,10 +35,11 @@ namespace EpidemicTracker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostPatientAsync(HospitalDto hospitalDto)
+        public async Task<IActionResult> PostHospitalAsync(HospitalDto hospitalDto)
         {
+            await _hospitalService.PostHospitalAsync(hospitalDto);
 
-            return Ok(await _hospitalService.PostHospitalAsync(hospitalDto));
+            return Ok();
         }
     }
 }

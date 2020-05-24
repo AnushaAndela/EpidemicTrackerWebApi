@@ -37,8 +37,8 @@ namespace EpidemicTracker.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> PostDiseaseAsync(DiseaseDto diseaseDto)
         {
-
-            return Ok(await _diseaseService.PostDiseaseAsync(diseaseDto));
+            await _diseaseService.PostDiseaseAsync(diseaseDto);
+            return Ok();
         }
     }
 }

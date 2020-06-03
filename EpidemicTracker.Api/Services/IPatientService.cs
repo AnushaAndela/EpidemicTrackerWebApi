@@ -13,7 +13,9 @@ namespace EpidemicTracker.Api.Services
         Task<IEnumerable<TreatmentDto>> GetCuredPatients();
         Task<IEnumerable<TreatmentDto>> GetUnCuredPatients();
         Task<IEnumerable<TreatmentDto>> GetFatilityCount();
-        Task<IEnumerable<PatientDto>> GetIsAffected();
+        
         Task PostPatientAsync(PatientDto patientDto);
+        Task DeletePatientAsync(int id);
+
     }
 }

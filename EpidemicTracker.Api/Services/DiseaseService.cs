@@ -31,8 +31,8 @@ namespace EpidemicTracker.Api.Services
 
                 diseasesDto.Add(diseaseDto);
             }
-            var diseaseDtolist = diseasesDto.Distinct();
-            return diseaseDtolist;
+            
+            return diseasesDto.Distinct();
         }
 
         public async Task<DiseaseDto> GetDiseaseAsync(int id)

@@ -10,13 +10,13 @@ namespace EpidemicTracker.data.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PatientId { get; set; }
-        [Required]
+        
         public string Name { get; set; }
-        [Required]
+        
         public int Age { get; set; }
-        [Required]
+        
         public string Gender { get; set; }
-        [Required]
+        
         public long Phone { get; set; }
         
         public long? AadharId { get; set; }

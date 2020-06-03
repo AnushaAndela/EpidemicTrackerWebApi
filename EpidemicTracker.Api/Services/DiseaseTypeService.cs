@@ -20,6 +20,7 @@ namespace EpidemicTracker.Api.Services
         public async Task<IEnumerable<DiseaseTypeDto>> GetAllAsync()
         {
             var DiseasesType = from a in _context.DiseaseType.Include(a => a.Disease)
+                               
                                select new DiseaseTypeDto()
                                {
                                    TypeOfDisease = a.TypeOfDisease,

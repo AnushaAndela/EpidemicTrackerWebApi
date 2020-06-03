@@ -44,13 +44,7 @@ namespace EpidemicTracker.Api.Controllers
         {
             return Ok(await _patientService.GetFatilityCount());
         }
-        [HttpGet]
-        [Route("PatientDataIsAffected")]
-        public async Task<IActionResult> GetIsAffected()
-        {
-            return Ok(await _patientService.GetIsAffected());
-        }
-
+       
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPatientAsync(int id)
         {
@@ -65,5 +59,17 @@ namespace EpidemicTracker.Api.Controllers
             await _patientService.PostPatientAsync(patientdto);
             return Ok();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePatientAsync(int id)
+        {
+            if (id < 0)
+                return BadRequest("Not a valid Request");
+            else
+            await _patientService.DeletePatientAsync(id);
+            return Ok();
+        }
+
+
     }
 }

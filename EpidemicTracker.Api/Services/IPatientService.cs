@@ -16,6 +16,7 @@ namespace EpidemicTracker.Api.Services
         
         Task PostPatientAsync(PatientDto patientDto);
         Task DeletePatientAsync(int id);
+        Task UpdatePatientAsync(int id,PatientDto patientdto);
 
     }
 }

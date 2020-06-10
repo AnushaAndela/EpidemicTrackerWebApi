@@ -7,21 +7,20 @@ namespace EpidemicTracker.data.Models
 {
     public class Occupation
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public int OccupationId { get; set; }
-        [Required]
+        
         public string Name { get; set; }
         public long? Phone { get; set; }
-        [Required]
+       
         public string StreetNo { get; set; }
-        [Required]
+        
         public string Area { get; set; }
-        [Required]
+      
         public string City { get; set; }
-        [Required]
+        
         public string State { get; set; }
-        [Required]
+       
         public string Country { get; set; }
         public int? Pincode { get; set; }
         public int? PatientId { get; set; }

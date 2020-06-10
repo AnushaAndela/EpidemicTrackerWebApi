@@ -6,20 +6,19 @@ namespace EpidemicTracker.data.Models
 {
     public class Address
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+       
         public int AddressId { get; set; }
-        [Required]
+       
         public string AddressType { get; set; }
-        [Required]
+       
         public string Hno { get; set; }
-        [Required]
+       
         public string Street { get; set; }
-        [Required]
+       
         public string City { get; set; }
-        [Required]
+       
         public string State { get; set; }
-        [Required]
+      
         public string Country { get; set; }
         public int? Pincode { get; set; }
         public string CreatedBy { get; set; }

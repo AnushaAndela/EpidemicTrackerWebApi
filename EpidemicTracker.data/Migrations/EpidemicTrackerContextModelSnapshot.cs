@@ -185,6 +185,26 @@ namespace EpidemicTracker.data.Migrations
                     b.ToTable("Hospital");
                 });
 
+            modelBuilder.Entity("EpidemicTracker.data.Models.Login", b =>
+                {
+                    b.Property<int>("LoginId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LoginId");
+
+                    b.ToTable("Login");
+                });
+
             modelBuilder.Entity("EpidemicTracker.data.Models.Occupation", b =>
                 {
                     b.Property<int>("OccupationId")
@@ -351,7 +371,7 @@ namespace EpidemicTracker.data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("PercentageCure")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime?>("RelievingDate")
                         .HasColumnType("datetime2");

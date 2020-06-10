@@ -8,15 +8,14 @@ namespace EpidemicTracker.data.Models
 {
    public class Treatment
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public int TreatmentId { get; set; }
-        [Required]
+       
         public DateTime AdmittedDate { get; set; }
-        [Required]
+       
         public decimal PercentageCure { get; set; }
         public DateTime? RelievingDate { get; set; }
-        [Required]
+       
         public string Isfatility { get; set; }
         public int? PatientId { get; set; }
         public int? DiseaseId { get; set; }

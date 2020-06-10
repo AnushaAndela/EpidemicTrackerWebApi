@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EpidemicTracker.data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -32,11 +32,11 @@ namespace EpidemicTracker.data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: false),
                     Phone = table.Column<long>(nullable: false),
-                    StreetNo = table.Column<string>(nullable: false),
-                    Area = table.Column<string>(nullable: false),
-                    City = table.Column<string>(nullable: false),
-                    State = table.Column<string>(nullable: false),
-                    Country = table.Column<string>(nullable: false),
+                    StreetNo = table.Column<string>(nullable: true),
+                    Area = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
                     Pincode = table.Column<int>(nullable: true),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: true),
@@ -46,6 +46,20 @@ namespace EpidemicTracker.data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Hospital", x => x.HospitalId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Login",
+                columns: table => new
+                {
+                    LoginId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Login", x => x.LoginId);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,6 +73,7 @@ namespace EpidemicTracker.data.Migrations
                     Gender = table.Column<string>(nullable: false),
                     Phone = table.Column<long>(nullable: false),
                     AadharId = table.Column<long>(nullable: true),
+                    IsAffected = table.Column<string>(nullable: true),
                     CreatedBy = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: true),
                     UpdatedBy = table.Column<string>(nullable: true),
@@ -161,7 +176,7 @@ namespace EpidemicTracker.data.Migrations
                     TreatmentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AdmittedDate = table.Column<DateTime>(nullable: false),
-                    PercentageCure = table.Column<decimal>(nullable: false),
+                    PercentageCure = table.Column<decimal>(type: "decimal(18, 2)", nullable: false),
                     RelievingDate = table.Column<DateTime>(nullable: true),
                     Isfatility = table.Column<string>(nullable: false),
                     PatientId = table.Column<int>(nullable: true),
@@ -259,6 +274,9 @@ namespace EpidemicTracker.data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "Login");
 
             migrationBuilder.DropTable(
                 name: "OccupationType");

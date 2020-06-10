@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EpidemicTracker.data.Migrations
 {
     [DbContext(typeof(EpidemicTrackerContext))]
-    [Migration("20200522044600_Second")]
-    partial class Second
+    [Migration("20200604174437_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -187,6 +187,26 @@ namespace EpidemicTracker.data.Migrations
                     b.ToTable("Hospital");
                 });
 
+            modelBuilder.Entity("EpidemicTracker.data.Models.Login", b =>
+                {
+                    b.Property<int>("LoginId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("LoginId");
+
+                    b.ToTable("Login");
+                });
+
             modelBuilder.Entity("EpidemicTracker.data.Models.Occupation", b =>
                 {
                     b.Property<int>("OccupationId")
@@ -302,6 +322,9 @@ namespace EpidemicTracker.data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IsAffected")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -350,7 +373,7 @@ namespace EpidemicTracker.data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("PercentageCure")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<DateTime?>("RelievingDate")
                         .HasColumnType("datetime2");

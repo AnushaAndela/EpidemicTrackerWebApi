@@ -7,10 +7,9 @@ namespace EpidemicTracker.data.Models
 {
     public class DiseaseType
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+       
         public int DiseaseTypeId { get; set; }
-        [Required]
+       
         public string TypeOfDisease { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }

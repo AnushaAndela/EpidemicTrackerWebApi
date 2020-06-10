@@ -1,5 +1,4 @@
 ﻿using EpidemicTracker.Api.Services.Dtos;
-using EpidemicTracker.Api.Transformers;
 using EpidemicTracker.data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,6 +23,7 @@ namespace EpidemicTracker.Api.Services
                                        .Include(a => a.Occupation)
                            select new PatientDto()
                            {
+                               PatientDtoId = a.PatientId,
                                Name = a.Name,
                                Age = a.Age,
                                Gender = a.Gender,
@@ -33,6 +33,7 @@ namespace EpidemicTracker.Api.Services
                                Addresses = (from b in a.Address
                                             select new AddressDto()
                                             {
+                                                AddressDtoId = b.AddressId,
                                                 AddressType = b.AddressType,
                                                 Hno = b.Hno,
                                                 Street = b.Street,
@@ -45,6 +46,7 @@ namespace EpidemicTracker.Api.Services
                                Occupations = (from o in a.Occupation
                                               select new OccupationDto()
                                               {
+                                                  OccupationDtoId = o.OccupationId,
                                                   Name = o.Name,
                                                   Phone = o.Phone,
                                                   StreetNo = o.StreetNo,
@@ -57,6 +59,7 @@ namespace EpidemicTracker.Api.Services
                                Treatments = (from t in a.Treatment
                                              select new TreatmentDto()
                                              {
+                                                 TreatmentDtoId = t.TreatmentId,
                                                  AdmittedDate = t.AdmittedDate,
                                                  PercentageCure = t.PercentageCure,
                                                  RelievingDate = t.RelievingDate,
@@ -296,15 +299,24 @@ namespace EpidemicTracker.Api.Services
             patient.AadharId = patientdto.AadharId;
             patient.IsAffected = patientdto.IsAffected;
             patient.Address = new List<Address>();
+            foreach (var item in patientdto.Addresses)
+            {
+                var address = new Address();
+                address.AddressType = item.AddressType;
+                address.Hno = item.Hno;
+                address.Street = item.Street;
+                address.City = item.City;
+                address.State = item.State;
+                address.Country = item.Country;
+                address.Pincode = item.Pincode;
+                patient.Address.Add(address);
 
-
-
-            patientdto.Addresses.ForEach(addr => patient.Address.Add(addr.ConvertToAddress()));
-
+                }
             patient.Occupation = new List<Occupation>();
             foreach (var item in patientdto.Occupations)
             {
                 var occupation = new Occupation();
+
                 occupation.Name = item.Name;
                 occupation.Phone = item.Phone;
                 occupation.StreetNo = item.StreetNo;
@@ -364,10 +376,97 @@ namespace EpidemicTracker.Api.Services
         public async Task DeletePatientAsync(int id)
         {
 
-            var patient = await _context.Patient.Include(a=>a.Address).Include(a=>a.Occupation).Include(a=>a.Treatment).FirstOrDefaultAsync(x => x.PatientId == id);
+            var patient = await _context.Patient.Include(a => a.Address).Include(a => a.Occupation).Include(a => a.Treatment).FirstOrDefaultAsync(x => x.PatientId == id);
 
             _context.Patient.Remove(patient);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdatePatientAsync(int id,PatientDto patientdto)
+        {
+
+            var patient = await _context.Patient.FirstOrDefaultAsync(x => x.PatientId == id);
+            if (patient != null)
+            {
+                patient.Name = patientdto.Name;
+                patient.Age = patientdto.Age;
+                patient.Gender = patientdto.Gender;
+                patient.Phone = patientdto.Phone;
+                patient.AadharId = patientdto.AadharId;
+                patient.IsAffected = patientdto.IsAffected;
+                patient.Address = new List<Address>();
+                foreach (var item in patientdto.Addresses)
+                {
+                    var address = new Address();
+                    address.AddressType = item.AddressType;
+                    address.Hno = item.Hno;
+                    address.Street = item.Street;
+                    address.City = item.City;
+                    address.State = item.State;
+                    address.Country = item.Country;
+                    address.Pincode = item.Pincode;
+                    patient.Address.Add(address);
+
+                }
+
+                patient.Occupation = new List<Occupation>();
+                foreach (var item in patientdto.Occupations)
+                {
+                    var occupation = new Occupation();
+
+                    occupation.Name = item.Name;
+                    occupation.Phone = item.Phone;
+                    occupation.StreetNo = item.StreetNo;
+                    occupation.Area = item.Area;
+                    occupation.City = item.City;
+                    occupation.State = item.State;
+                    occupation.Country = item.Country;
+                    occupation.Pincode = item.Pincode;
+                    patient.Occupation.Add(occupation);
+                }
+
+                patient.Treatment = new List<Treatment>();
+                foreach (var item in patientdto.Treatments)
+                {
+                    var treatment = new Treatment();
+                    treatment.AdmittedDate = item.AdmittedDate;
+                    treatment.PercentageCure = item.PercentageCure;
+                    treatment.RelievingDate = item.RelievingDate;
+                    treatment.Isfatility = item.Isfatility;
+                    //treatment.PatientId = item.PatientId;
+
+                    //treatment.DiseaseId = item.DiseaseId;
+
+
+                    treatment.Disease = new Disease()
+                    {
+                        
+                        Name = item.DiseaseDto.Name
+
+
+                    };
+                    treatment.Hospital = new Hospital()
+                    {
+                        
+                        Name = item.HospitalDto.Name,
+
+                    };
+                    patient.Treatment.Add(treatment);
+
+                }
+
+                //Statusenum status = patientdto.Status;
+                //string str = status.ToString();
+                //patient.Status = str;
+
+
+
+                _context.Patient.Update(patient);
+
+                await _context.SaveChangesAsync();
+
+
+            }
         }
     }
 }

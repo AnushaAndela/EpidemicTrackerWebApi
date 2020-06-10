@@ -69,7 +69,12 @@ namespace EpidemicTracker.Api.Controllers
             await _patientService.DeletePatientAsync(id);
             return Ok();
         }
-
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePatientAsync(int id,PatientDto patientdto)
+        {
+            await _patientService.UpdatePatientAsync(id,patientdto);
+            return Ok();
+        }
 
     }
 }

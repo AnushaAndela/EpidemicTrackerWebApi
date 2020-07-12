@@ -6,6 +6,7 @@ using EpidemicTracker.Api.Services;
 using EpidemicTracker.Api.Services.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace EpidemicTracker.Api.Controllers
 {
@@ -14,10 +15,14 @@ namespace EpidemicTracker.Api.Controllers
     public class PatientController : ControllerBase
     {
         private readonly IPatientService _patientService;
+        private ILogger<PatientController> logger;
+        
 
+        
 
-        public PatientController(IPatientService patientService)
+        public PatientController(ILogger<PatientController> logger, IPatientService patientService)
         {
+            this.logger = logger;
             _patientService = patientService;
         }
 
@@ -28,21 +33,21 @@ namespace EpidemicTracker.Api.Controllers
         }
         [HttpGet]
         [Route("PatientData")]
-        public async Task<IActionResult> GetCuredPatients()
+        public IActionResult GetCuredPatients()
         {
-            return Ok(await _patientService.GetCuredPatients());
+            return Ok( _patientService.GetCuredPatients());
         }
         [HttpGet]
         [Route("PatientDataUncured")]
-        public async Task<IActionResult> GetUnCuredPatients()
+        public IActionResult GetUnCuredPatients()
         {
-            return Ok(await _patientService.GetUnCuredPatients());
+            return Ok( _patientService.GetUnCuredPatients());
         }
         [HttpGet]
         [Route("PatientDataFatility")]
-        public async Task<IActionResult> GetFatilityCount()
+        public IActionResult GetFatilityCount()
         {
-            return Ok(await _patientService.GetFatilityCount());
+            return Ok( _patientService.GetFatilityCount());
         }
        
         [HttpGet("{id}")]

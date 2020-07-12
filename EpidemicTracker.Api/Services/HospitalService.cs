@@ -94,5 +94,37 @@ namespace EpidemicTracker.Api.Services
            
 
         }
+
+
+        public async Task DeleteHospitalAsync(int id)
+        {
+
+            var hospital = await _context.Hospital.Include(x=>x.Treatment).FirstOrDefaultAsync(x => x.HospitalId == id);
+
+            _context.Hospital.Remove(hospital);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UpdateHospitalAsync(int id, HospitalDto hospitalDto)
+        {
+
+            var hospital = await _context.Hospital.FirstOrDefaultAsync(x => x.HospitalId == id);
+            if (hospital != null)
+            {
+                hospital.Name = hospitalDto.Name;
+                hospital.Phone = hospitalDto.Phone;
+                hospital.StreetNo = hospitalDto.StreetNo;
+                hospital.Area = hospitalDto.Area;
+                hospital.City = hospitalDto.City;
+                hospital.State = hospitalDto.State;
+                hospital.Country = hospitalDto.Country;
+                hospital.Pincode = hospitalDto.Pincode;
+
+                _context.Hospital.Update(hospital);
+
+                await _context.SaveChangesAsync();
+
+
+            }
+        }
     }
 }

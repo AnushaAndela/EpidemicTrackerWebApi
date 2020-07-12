@@ -41,5 +41,20 @@ namespace EpidemicTracker.Api.Controllers
 
             return Ok();
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteHospitalAsync(int id)
+        {
+            if (id < 0)
+                return BadRequest("Not a valid Request");
+            else
+                await _hospitalService.DeleteHospitalAsync(id);
+            return Ok();
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateHospitalAsync(int id, HospitalDto hospitalDto)
+        {
+            await _hospitalService.UpdateHospitalAsync(id, hospitalDto);
+            return Ok();
+        }
     }
 }

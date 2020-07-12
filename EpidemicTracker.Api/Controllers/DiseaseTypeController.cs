@@ -38,6 +38,21 @@ namespace EpidemicTracker.Api.Controllers
             await _diseaseTypeService.SaveDiseaseAsync(diseaseTypeDto);
             return Ok();
         }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDiseaseAsync(int id)
+        {
+            if (id < 0)
+                return BadRequest("Not a valid Request");
+            else
+                await _diseaseTypeService.DeleteDiseaseAsync(id);
+            return Ok();
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateDiseaseAsync(int id, DiseaseTypeDto diseaseTypeDto)
+        {
+            await _diseaseTypeService.UpdateDiseaseAsync(id, diseaseTypeDto);
+            return Ok();
+        }
 
     }
 }

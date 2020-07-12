@@ -38,6 +38,7 @@ namespace EpidemicTracker.Api
             services.AddScoped(typeof(IDiseaseService), typeof(DiseaseService));
             services.AddScoped(typeof(IDiseaseTypeService), typeof(DiseaseTypeService));
             services.AddScoped(typeof(ILoginRepository), typeof(LoginRepository));
+            services.AddScoped(typeof(IPatientServiceFake), typeof(PatientServiceFake));
             services.AddCors(options =>
             {
                 options.AddPolicy(_specificOrigin,

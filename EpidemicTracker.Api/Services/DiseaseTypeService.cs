@@ -23,6 +23,7 @@ namespace EpidemicTracker.Api.Services
                                
                                select new DiseaseTypeDto()
                                {
+                                   DiseaseTypeId=a.DiseaseTypeId,
                                    TypeOfDisease = a.TypeOfDisease,
                                    Disease = (from b in a.Disease
                                               select new DiseaseDto()
@@ -71,6 +72,36 @@ namespace EpidemicTracker.Api.Services
             _context.DiseaseType.Add(diseaseType);
             await _context.SaveChangesAsync();
 
+        }
+        public async Task DeleteDiseaseAsync(int id)
+        {
+
+            var disease = await _context.DiseaseType.Include(a => a.Disease).FirstOrDefaultAsync(x => x.DiseaseTypeId == id);
+
+            _context.DiseaseType.Remove(disease);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateDiseaseAsync(int id, DiseaseTypeDto diseaseTypeDto)
+        {
+
+            var disease = await _context.DiseaseType.Include(a => a.Disease).FirstOrDefaultAsync(x => x.DiseaseTypeId == id);
+            if (disease != null)
+            {
+                disease.TypeOfDisease = diseaseTypeDto.TypeOfDisease;
+                
+
+
+
+
+
+
+                _context.DiseaseType.Update(disease);
+
+                await _context.SaveChangesAsync();
+
+
+            }
         }
     }
 }
